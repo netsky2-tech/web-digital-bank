@@ -1,8 +1,9 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AccountCard from "@/components/AccountCard";
+import FilterProduct from "@/components/FilterProduct";
 
-const accountsData = [
+const accounts = [
     {
       accountType: "Cuenta de Ahorro",
       number: "117279768",
@@ -22,29 +23,39 @@ const accountsData = [
   ];
 
 const Accounts = () => {
-    const [filter, setFilter] = useState("");
 
-    const filteredAccounts = accountsData.filter(
-        (account) =>
-          account.accountType.toLowerCase().includes(filter.toLowerCase()) ||
-          account.number.includes(filter)
-      );
+    const [filteredAccounts, setFilteredAccounts] = useState(accounts);
+
+      const handleFilterChange = (searchTerm) => {
+        const filtered = accounts.filter((account) =>
+          account.number.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          account.accountType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          account.currency.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredAccounts(filtered);
+      }
+      
+      useEffect(() => {
+        setFilteredAccounts(accounts)
+      }, [accounts])
 
     return (
        <div className="bg-gray-100 min-h-screen">
         {/** Filtro */}
         <div className="container mx-auto p-4">
-            <div className="flex items-center space-x-4 mb-4">
-                <input type="text" placeholder="Buscar" value={filter} onChange={(e) => setFilter(e.target.value)} className="flex-1 p-2 border rounded-md"></input>
-                <button className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg">
-                    Todos mis productos
-                </button>
-            </div>
+            <FilterProduct onFilterChange={handleFilterChange}></FilterProduct>
             {/**Lista de cuentas */}
             <div>
                 {filteredAccounts.map((account, index) => 
                 <AccountCard key={index} {...account} />
-            )}
+                 )}
+                 
+                 {filteredAccounts.length === 0 && (
+                    <div className="text-center text-gray-600 col-span-full">
+                      No se encontraron cuentas.
+                    </div>
+                  )}
+
             </div>
         </div>
        </div>      
