@@ -1,6 +1,7 @@
 import Navbar from "@/components/shared/Navbar";
 import Sidebar from "@/components/shared/Sidebar";
 import Footer from "@/components/shared/Footer";
+import { AccountsProvider } from "@/contexts/AccountsContext";
 import "./globals.css";
 
 
@@ -16,7 +17,9 @@ export default function RootLayout({ children }) {
         <div className="min-h-screen flex flex-col">
           <Navbar />
           <div className="">
-            <main className="flex-1 p-6">{children}</main>
+            <AccountsProvider>
+              <main className="flex-1 p-6">{children}</main>
+            </AccountsProvider>
           </div>
           <Footer />
         </div>

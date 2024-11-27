@@ -31,7 +31,7 @@ const Navbar = () => {
       </nav>
       <div className="hidden md:flex items-center space-x-4">
         <span>Octavio Morales Ruiz</span>
-        <span className="hover:underline text-xs">Cerrar sesion</span>
+        <span className="hover:underline text-xs">Salir</span>
       </div>
 
         {/* Icono hamburguesa */}

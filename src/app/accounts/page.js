@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import AccountCard from "@/components/AccountCard";
 import FilterProduct from "@/components/FilterProduct";
+import { useAccounts } from "@/contexts/AccountsContext";
 
 const accounts = [
     {
@@ -24,6 +25,7 @@ const accounts = [
 
 const Accounts = () => {
 
+    const { accounts, loading, error } = useAccounts();
     const [filteredAccounts, setFilteredAccounts] = useState(accounts);
 
       const handleFilterChange = (searchTerm) => {
@@ -33,11 +35,11 @@ const Accounts = () => {
           account.currency.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredAccounts(filtered);
-      }
-      
-      useEffect(() => {
-        setFilteredAccounts(accounts)
-      }, [accounts])
+      }   
+
+      if (loading) return <p>Cargando cuentas...</p>;
+      if (error) return <p>{error}</p>;
+      if (accounts.length === 0) return <p>No hay cuentas disponibles para mostrar.</p>;
 
     return (
        <div className="bg-gray-100 min-h-screen">
