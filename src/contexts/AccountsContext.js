@@ -25,6 +25,18 @@ export const AccountsProvider = ({ children }) => {
   const [errorTransactions, setErrorTransactions] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Parámetros para las transacciones
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [orderBy, setOrderBy] = useState("transaction_date");
+  const [order, setOrder] = useState("ASC");
+  const [transactionType, setTransactionType] = useState("ALL");
+
+  // Totales de paginación
+  const [totalPages, setTotalPages] = useState(1);
+
   useEffect(() => {
     const loadAccounts = async () => {
       setLoading(true);
@@ -51,11 +63,19 @@ export const AccountsProvider = ({ children }) => {
       setErrorTransactions(null);
       getTransactionHistory(
         selectedAccount.bankId,
-        selectedAccount.number,
+        selectedAccount.account_number,
+        dateFrom,
+        dateTo,
         currentPage,
+        pageSize,
+        orderBy,
+        order,
+        transactionType,
       )
         .then((data) => {
-          setTransactions(data);
+          setTransactions(data.content);
+          setTotalPages(data.totalPages || 1);
+          setCurrentPage(data.current_page_number);
         })
         .catch((error) => {
           setErrorTransactions(
@@ -66,10 +86,20 @@ export const AccountsProvider = ({ children }) => {
           setLoadingTransactions(false);
         });
     }
-  }, [selectedAccount, currentPage]);
+  }, [
+    selectedAccount,
+    currentPage,
+    dateFrom,
+    dateTo,
+    pageSize,
+    orderBy,
+    order,
+    transactionType,
+  ]);
 
   const changeSelectedAccount = (account) => {
     setSelectedAccount(account);
+    setPage(1);
   };
 
   const handlePageChange = (page) => {
@@ -90,6 +120,22 @@ export const AccountsProvider = ({ children }) => {
       errorTransactions,
       changeSelectedAccount,
       handlePageChange,
+      dateFrom,
+      dateTo,
+      page,
+      pageSize,
+      orderBy,
+      order,
+      transactionType,
+      totalPages,
+      setDateFrom,
+      setDateTo,
+      setPage,
+      setPageSize,
+      setOrderBy,
+      setOrder,
+      setTransactionType,
+      currentPage,
     }),
     [
       accounts,
@@ -99,6 +145,15 @@ export const AccountsProvider = ({ children }) => {
       transactions,
       loadingTransactions,
       errorTransactions,
+      currentPage,
+      dateFrom,
+      dateTo,
+      page,
+      pageSize,
+      orderBy,
+      order,
+      transactionType,
+      totalPages,
     ],
   );
 

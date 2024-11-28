@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import AccountCard from "@/components/AccountCard";
 import FilterProduct from "@/components/FilterProduct";
+import Spinner from "@/components/Spinner";
 import { useAccounts } from "@/contexts/AccountsContext";
 
 const Accounts = () => {
@@ -24,8 +25,9 @@ const Accounts = () => {
     setFilteredAccounts(filtered);
   };
 
-  if (loading) return <p>Cargando cuentas...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <Spinner />;
+  if (error)
+    return <p className="text-red-500">Error al cargar las cuentas: {error}</p>;
   if (accounts.length === 0)
     return <p>No hay cuentas disponibles para mostrar.</p>;
 

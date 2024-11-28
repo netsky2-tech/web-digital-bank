@@ -11,7 +11,7 @@ const Navbar = () => {
     { label: "Inicio", href: "/" },
     { label: "Mis Productos", href: "/accounts" },
     { label: "Transferir", href: "/transfer" },
-    { label: "Historial de movimientos", href: "/movements" },
+    { label: "Historial de movimientos", href: "/transactions" },
     { label: "Tasas", href: "/tasas" },
   ];
   return (
