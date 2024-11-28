@@ -59,7 +59,7 @@ export const AccountsProvider = ({ children }) => {
 
   useEffect(() => {
     if (selectedAccount) {
-      setLoadingTransactions(true);
+      setLoading(true);
       setErrorTransactions(null);
       getTransactionHistory(
         selectedAccount.bankId,
@@ -76,14 +76,16 @@ export const AccountsProvider = ({ children }) => {
           setTransactions(data.content);
           setTotalPages(data.totalPages || 1);
           setCurrentPage(data.current_page_number);
+          setLoading(false);
         })
         .catch((error) => {
           setErrorTransactions(
             error.message || "Error al cargar las transacciones",
           );
+          setLoading(false);
         })
         .finally(() => {
-          setLoadingTransactions(false);
+          setLoading(false);
         });
     }
   }, [

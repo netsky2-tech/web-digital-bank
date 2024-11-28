@@ -6,8 +6,8 @@ const FilterDateForm = ({
   dateTo,
   transactionType,
 }) => (
-  <div className="mb-4 flex flex-col md:flex-row gap-4">
-    <h4>Filtros de busqueda</h4>
+  <div className="mb-4 flex flex-col md:flex-row gap-6">
+    <h4 className="text-xl font-semibold mb-4 md:mb-0">Filtros de busqueda</h4>
     <label htmlFor="fecha_desde">Fecha desde:</label>
     <input
       id="fecha_desde"

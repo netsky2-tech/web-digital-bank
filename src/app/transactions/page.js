@@ -3,14 +3,13 @@ import Pagination from "@/components/Pagination";
 import Spinner from "@/components/Spinner";
 import TransactionHistory from "@/components/TransactionHistory";
 import { useAccounts } from "@/contexts/AccountsContext";
-import { useLoading } from "@/contexts/LoadingContext";
 
 const Transactions = () => {
   const {
     accounts,
     selectedAccount,
     transactions,
-    loadingTransactions,
+    loading,
     errorTransactions,
     changeSelectedAccount,
     handlePageChange,
@@ -28,8 +27,6 @@ const Transactions = () => {
     setOrder,
   } = useAccounts();
 
-  const { loading, setLoading } = useLoading();
-
   const handleAccountChange = (event) => {
     const accountId = event.target.value;
     const account = accounts.find(
@@ -38,8 +35,13 @@ const Transactions = () => {
     changeSelectedAccount(account);
   };
 
-  if (loadingTransactions) return <p>Cargando transacciones...</p>;
-  if (errorTransactions) return <p>Error: {errorTransactions}</p>;
+  if (loading) return <Spinner />;
+  if (errorTransactions)
+    return (
+      <p className="text-red-500">
+        Error al cargar las cuentas: {errorTransactions}
+      </p>
+    );
 
   return (
     <div className="bg-gray-100 min-h-screen">
