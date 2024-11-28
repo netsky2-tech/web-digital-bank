@@ -1,9 +1,12 @@
-import Navbar from "@/components/shared/Navbar";
-import Sidebar from "@/components/shared/Sidebar";
+import dotenv from "dotenv";
+
 import Footer from "@/components/shared/Footer";
+import Navbar from "@/components/shared/Navbar";
 import { AccountsProvider } from "@/contexts/AccountsContext";
+
 import "./globals.css";
 
+dotenv.config();
 
 export const metadata = {
   title: "Web Digital Bank",

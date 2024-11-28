@@ -1,15 +1,15 @@
 import { useState } from "react";
 
-const FilterProduct = ({ onFilterChange, placeholder = 'Buscar...' }) => {
-    const [searchTerm, setSearchTerm] = useState('')
+const FilterProduct = ({ onFilterChange, placeholder = "Buscar..." }) => {
+  const [searchTerm, setSearchTerm] = useState("");
 
-    const handleInputChange = (e) => {
-        const value = e.target.value;
-        setSearchTerm(value)
-        onFilterChange(value)
-    }
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    onFilterChange(value);
+  };
 
-    return (
+  return (
     <div className="relative mb-6">
       <input
         type="text"
@@ -33,7 +33,7 @@ const FilterProduct = ({ onFilterChange, placeholder = 'Buscar...' }) => {
         />
       </svg>
     </div>
-    )
-}
+  );
+};
 
 export default FilterProduct;
