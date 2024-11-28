@@ -1,4 +1,5 @@
 import { fetchAuthToken } from "./authService"
+require('dotenv').config()
 
 export const fetchAccounts = async({bankId = "BLNI", customerId = "100200", accountType = "S001"} = {}) => {
     const baseUrl = `http://localhost:3000/api/obl/v1/banks/${bankId}/customers/${customerId}/accounts`
@@ -28,11 +29,12 @@ export const fetchBalance = async(bankId, accountNumber) => {
     const url = `http://localhost:3000/api/obl/v1/banks/${bankId}/accounts/${accountNumber}/balance`; 
     
     try {
+        const API_KEY = process.env.API_KEY
         const token = await fetchAuthToken()
         const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${token}`,
-                'x-api-key': 'G3yCDUD91N4nW6YghwTdjJoA32gauL36pq2mWZH1'
+                'x-api-key': API_KEY
             }
         })
         if(!response.ok){
