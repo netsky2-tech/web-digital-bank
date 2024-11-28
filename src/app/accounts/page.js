@@ -4,38 +4,25 @@ import AccountCard from "@/components/AccountCard";
 import FilterProduct from "@/components/FilterProduct";
 import { useAccounts } from "@/contexts/AccountsContext";
 
-const accounts = [
-    {
-      accountType: "Cuenta de Ahorro",
-      number: "117279768",
-      bank: "Banco LAFISE Nicaragua",
-      owner: "Octavio Octavio Morales Ruiz",
-      currency: "USD",
-      balance: { available: 0.0, total: 0.0 },
-    },
-    {
-      accountType: "Cuenta de Ahorro",
-      number: "135044153",
-      bank: "Banco LAFISE Nicaragua",
-      owner: "Octavio Octavio Morales Ruiz",
-      currency: "NIO",
-      balance: { available: 10.28, total: 10.28 },
-    },
-  ];
-
 const Accounts = () => {
 
     const { accounts, loading, error } = useAccounts();
     const [filteredAccounts, setFilteredAccounts] = useState(accounts);
 
+    useEffect(() => {
+      setFilteredAccounts(accounts)
+    }, [accounts])
+
       const handleFilterChange = (searchTerm) => {
         const filtered = accounts.filter((account) =>
-          account.number.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          account.accountType.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          account.currency.toLowerCase().includes(searchTerm.toLowerCase())
+          account.account_number.toString().includes(searchTerm.toLowerCase()) ||
+          account.account_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          account.currency.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          account.label.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredAccounts(filtered);
       }   
+
 
       if (loading) return <p>Cargando cuentas...</p>;
       if (error) return <p>{error}</p>;
@@ -52,7 +39,7 @@ const Accounts = () => {
                 <AccountCard key={index} {...account} />
                  )}
                  
-                 {filteredAccounts.length === 0 && (
+                {filteredAccounts.length === 0 && (
                     <div className="text-center text-gray-600 col-span-full">
                       No se encontraron cuentas.
                     </div>

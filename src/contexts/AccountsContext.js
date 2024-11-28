@@ -1,6 +1,6 @@
 "use client"
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { fetchAccounts } from "@/services/accountsService";
+import { getAccountWithBalances } from "@/services/accountsService";
 
 
 const AccountsContexts = createContext();
@@ -21,8 +21,9 @@ export const AccountsProvider = ({children}) => {
     useEffect(() => {
         const loadAccounts = async () => {
             setLoading(true)
+            setError(null)
             try {
-                const data = await fetchAccounts({
+                const data = await getAccountWithBalances({
                     bankId: "BLNI",
                     customerId: "100200",
                     accountType: "S001"
