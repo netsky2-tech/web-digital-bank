@@ -1,12 +1,17 @@
 "use client";
+import { useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
+
 import Pagination from "@/components/Pagination";
 import Spinner from "@/components/Spinner";
 import TransactionHistory from "@/components/TransactionHistory";
 import { useAccounts } from "@/contexts/AccountsContext";
+import { getTransactionHistory } from "@/services/transactionsService";
 
 const Transactions = () => {
   const {
     accounts,
+    setSelectedAccount,
     selectedAccount,
     transactions,
     loading,
@@ -25,7 +30,83 @@ const Transactions = () => {
     setPage,
     setOrderBy,
     setOrder,
+    setLoading,
+    setError,
+    orderBy,
+    order,
+    setTransactions,
+    setTotalPages,
+    setCurrentPage,
   } = useAccounts();
+
+  const searchParams = useSearchParams();
+  const accountNumberFromParams = searchParams.get("accountNumber");
+  const bankIdFromParams = searchParams.get("bankId");
+
+  const [accountNumber, setAccountNumber] = useState(
+    accountNumberFromParams || "",
+  );
+  const [bankId, setBankId] = useState(bankIdFromParams || "");
+
+  // Fetch de movements en base a URL Params luego de clickear AccountCard
+  useEffect(() => {
+    if (accountNumber && bankId) {
+      const preloadedAccount = accounts.find(
+        (account) =>
+          account.account_number === Number(accountNumberFromParams) &&
+          account.bankId === bankIdFromParams,
+      );
+      if (preloadedAccount) {
+        setSelectedAccount(preloadedAccount);
+      }
+      fetchTransactions();
+    }
+  }, [
+    accountNumber,
+    bankId,
+    dateFrom,
+    dateTo,
+    transactionType,
+    orderBy,
+    order,
+    accountNumberFromParams,
+    bankIdFromParams,
+  ]);
+
+  const fetchTransactions = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      getTransactionHistory(
+        bankId,
+        accountNumber,
+        dateFrom,
+        dateTo,
+        1,
+        20,
+        orderBy,
+        order,
+        transactionType,
+      )
+        .then((data) => {
+          setTransactions(data.content || []);
+          setTotalPages(data.totalPages || 1);
+          setCurrentPage(data.current_page_number);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setError(error.message || "Error al cargar las transacciones");
+          setLoading(false);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } catch (err) {
+      setError(err.message || "Error al cargar transacciones.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleAccountChange = (event) => {
     const accountId = event.target.value;

@@ -138,6 +138,10 @@ export const AccountsProvider = ({ children }) => {
       setOrder,
       setTransactionType,
       currentPage,
+      setLoading,
+      setError,
+      setTotalPages,
+      setCurrentPage,
     }),
     [
       accounts,
