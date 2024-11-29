@@ -113,6 +113,7 @@ const Transactions = () => {
     const account = accounts.find(
       (acc) => acc.account_number === Number(accountId),
     );
+    console.log(account);
     changeSelectedAccount(account);
   };
 

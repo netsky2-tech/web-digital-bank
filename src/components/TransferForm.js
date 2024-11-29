@@ -33,18 +33,43 @@ const TransferForm = () => {
     setTransactionStatus(null);
 
     try {
-      const transactionData = {
-        bankId: "BLNI",
-        accountNumber: formData.originAccount,
-        accountNumberTo: formData.destinationAccount,
-        currency: formData.currency,
-        amount: formData.amount,
-        debitDescription: formData.debitDescription,
-        creditDescription: formData.creditDescription,
-        emailConfirmation: formData.emailConfirmation,
+      // Encuentra las cuentas seleccionadas
+      const originAccount = accounts.find(
+        (acc) => acc.account_number === Number(formData.originAccount),
+      );
+      const destinationAccount = accounts.find(
+        (acc) => acc.account_number === Number(formData.destinationAccount),
+      );
+
+      if (!originAccount || !destinationAccount) {
+        throw new Error("Por favor selecciona cuentas válidas.");
+      }
+      const transactionBody = {
+        transfer_type: "OwnAccounts",
+        debit_description: formData.debitDescription,
+        to_transfer_to_own_accounts: {
+          credit_description: formData.creditDescription,
+          to: {
+            name: destinationAccount.label,
+            bank_code: destinationAccount.bankId,
+            account: {
+              number: destinationAccount.account_number,
+              iban: "",
+            },
+          },
+          value: {
+            currency: formData.currency,
+            amount: parseFloat(formData.amount),
+          },
+        },
       };
 
-      const result = await transactionRequest(transactionData);
+      const result = await transactionRequest(
+        originAccount.bankId,
+        originAccount.account_number,
+        1,
+        transactionBody,
+      );
       setTransactionStatus(result);
     } catch (err) {
       setError(err.message || "Error al realizar la solicitud de transacción.");
@@ -102,9 +127,13 @@ const TransferForm = () => {
           type="submit"
           className="bg-green-800 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
         >
-          Continuar
+          {loading ? "Procesando..." : "Continuar"}
         </button>
       </div>
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {transactionStatus && (
+        <p className="text-green-500 text-sm">Transacción exitosa</p>
+      )}
     </form>
   );
 };

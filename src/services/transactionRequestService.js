@@ -10,44 +10,21 @@ if (!API_KEY) {
 export const transactionRequest = async (
   bankId,
   accountNumber,
-  viewId,
-  transferType,
-  debitDescription,
-  creditDescription,
-  beneficiaryName,
-  bankCode,
-  accountNumberTo,
-  currency,
-  amount,
+  viewId = 1,
+  transactionBody,
 ) => {
-  const baseUrl = `http://localhost:3000/api/obl/v1//banks/${bankId}/accounts/${accountNumber}/${viewId}/transaction-request-types/FREE_FORM/transaction-requests`;
-  const body = {
-    transfer_type: transferType,
-    debit_description: debitDescription,
-    to_transfer_to_own_accounts: {
-      credit_description: creditDescription,
-      to: {
-        name: beneficiaryName,
-        bank_code: bankCode,
-        number: accountNumberTo,
-        iban: "",
-      },
-    },
-    value: {
-      currency: currency,
-      amount: amount,
-    },
-  };
-  const token = await fetchAuthToken();
+  const baseUrl = `http://localhost:3000/api/obl/v1/banks/${bankId}/accounts/${accountNumber}/${viewId}/transaction-request-types/FREE_FORM/transaction-requests`;
 
+  const token = await fetchAuthToken();
   const response = await fetch(baseUrl, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`,
+      accept: "application/json",
       "x-api-key": API_KEY,
-      "Content-Type": "application/json",
+      "content-type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(transactionBody),
   });
   if (!response.ok) {
     throw new Error("Error en la solicitud de transacción.");
