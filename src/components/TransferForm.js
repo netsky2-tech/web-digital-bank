@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import SelectAccount from "./SelectAccount";
 import TransactionDetails from "./TransactionDetails";
+import TransferResultModal from "./TransferResultModal";
 
 import { useAccounts } from "@/contexts/AccountsContext";
 import { transactionRequest } from "@/services/transactionRequestService";
@@ -77,7 +78,17 @@ const TransferForm = () => {
       setLoading(false);
     }
   };
-
+  const resetForm = () => {
+    setFormData({
+      originAccount: "",
+      destinationAccount: "",
+      amount: "",
+      currency: "USD",
+      debitDescription: "",
+      creditDescription: "",
+      beneficiaryName: "",
+    });
+  };
   return (
     <form
       onSubmit={handleSubmit}
@@ -114,6 +125,7 @@ const TransferForm = () => {
         <button
           type="reset"
           className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+          onClick={resetForm}
         >
           Limpiar
         </button>
@@ -133,6 +145,15 @@ const TransferForm = () => {
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {transactionStatus && (
         <p className="text-green-500 text-sm">Transacción exitosa</p>
+      )}
+      {transactionStatus && (
+        <TransferResultModal
+          transactionData={transactionStatus}
+          onClose={() => {
+            setTransactionStatus(null);
+            resetForm();
+          }}
+        ></TransferResultModal>
       )}
     </form>
   );

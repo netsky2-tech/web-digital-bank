@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 
-const TransferResultModal = ({ transactionData, onClose }) => {
+const TransferResultModal = ({ transactionData, onClose, updateAccounts }) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const hasError = transactionData?.error_message?.length > 0;
@@ -10,12 +10,20 @@ const TransferResultModal = ({ transactionData, onClose }) => {
     ? "Error en la transacción"
     : "Transacción exitosa";
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    onClose();
+
+    if (updateAccounts) {
+      updateAccounts(); // Actualiza las cuentas con los nuevos datos
+    }
+  };
   return (
     <>
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg w-full max-w-4xl p-6">
-            <div className="flex justify-between items-center mb-4">
+          <div className="bg-white rounded-lg w-full max-w-lg p-6 md:max-w-4xl md:p-8">
+            <div className="flex justify-between items-center mb-6">
               <h2 className={`text-2xl font-semibold ${statusClass}`}>
                 {statusText}
               </h2>
@@ -25,13 +33,14 @@ const TransferResultModal = ({ transactionData, onClose }) => {
                   onClose();
                 }}
                 className="text-gray-600 hover:text-gray-900 font-bold"
+                aria-label="Cerrar modal"
               >
                 X
               </button>
             </div>
 
             {/* Información de la transacción */}
-            <div className="space-y-4">
+            <div className="space-y-6">
               {/* Información de la transacción */}
               <div className="bg-gray-100 p-4 rounded-md">
                 <h3 className="font-semibold">Detalles de la Transacción</h3>
@@ -46,10 +55,6 @@ const TransferResultModal = ({ transactionData, onClose }) => {
                 <p>
                   <strong>Tipo de Transacción: </strong>
                   {transactionData.type}
-                </p>
-                <p>
-                  <strong>Estado: </strong>
-                  {transactionData.status}
                 </p>
               </div>
 
@@ -130,17 +135,6 @@ const TransferResultModal = ({ transactionData, onClose }) => {
                   {transactionData.destiny_bank_exchange_rate.sales_rate}
                 </p>
               </div>
-
-              {/* Comisiones */}
-              <div className="bg-gray-100 p-4 rounded-md">
-                <h3 className="font-semibold">Comisiones</h3>
-                {transactionData.charges.charges.map((charge, index) => (
-                  <p key={index}>
-                    <strong>{charge.concept}: </strong>
-                    {charge.value.amount} {charge.value.currency}
-                  </p>
-                ))}
-              </div>
             </div>
 
             <div className="mt-6 flex justify-end">
@@ -149,7 +143,8 @@ const TransferResultModal = ({ transactionData, onClose }) => {
                   setIsModalOpen(false);
                   onClose();
                 }}
-                className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
+                className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+                aria-label="Cerrar modal"
               >
                 Cerrar
               </button>
