@@ -5,18 +5,28 @@ import {
   FaCheckCircle,
   FaExclamationCircle,
   FaInfoCircle,
+  FaTimes,
 } from "react-icons/fa";
 
-const Notification = ({ message, type, duration = 3000, onClose }) => {
+const Notification = ({
+  message,
+  type,
+  duration = 3000,
+  onClose,
+  persistent = false,
+}) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisible(false);
-      if (onClose) onClose();
-    }, duration);
-    return () => clearTimeout(timer);
-  }, [duration, onClose]);
+    if (!persistent) {
+      const timer = setTimeout(() => {
+        setVisible(false);
+        if (onClose) onClose();
+      }, duration);
+
+      return () => clearTimeout(timer);
+    }
+  }, [duration, persistent, onClose]);
 
   const getIcon = () => {
     switch (type) {
@@ -47,6 +57,10 @@ const Notification = ({ message, type, duration = 3000, onClose }) => {
         return "";
     }
   };
+  const handleClose = () => {
+    setVisible(false);
+    if (onClose) onClose();
+  };
 
   if (!visible) return null;
 
@@ -57,6 +71,15 @@ const Notification = ({ message, type, duration = 3000, onClose }) => {
     >
       {getIcon()}
       <span>{message}</span>
+      {!persistent && (
+        <button
+          onClick={handleClose}
+          className="ml-4 text-gray-600 hover:text-gray-800"
+          aria-label="Cerrar notificación"
+        >
+          <FaTimes />
+        </button>
+      )}
     </div>
   );
 };
@@ -64,6 +87,7 @@ Notification.propTypes = {
   message: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   duration: PropTypes.number.isRequired,
-  onClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
+  persistent: PropTypes.bool,
 };
 export default Notification;

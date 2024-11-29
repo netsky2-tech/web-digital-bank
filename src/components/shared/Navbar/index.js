@@ -10,7 +10,7 @@ const Navbar = () => {
   const navItems = [
     { label: "Inicio", href: "/" },
     { label: "Mis Productos", href: "/accounts" },
-    { label: "Transferir", href: "/transfer" },
+    { label: "Transferencias", href: "/transfer" },
     { label: "Historial de movimientos", href: "/transactions" },
     { label: "Tasas", href: "/tasas" },
   ];

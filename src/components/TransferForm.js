@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 
+import Notification from "./Notification";
 import SelectAccount from "./SelectAccount";
 import TransactionDetails from "./TransactionDetails";
 import TransferResultModal from "./TransferResultModal";
@@ -172,14 +173,18 @@ const TransferForm = () => {
         </button>
       </div>
       {error && (
-        <div className="flex items-center text-sm text-red-600 bg-red-100 p-3 rounded-lg shadow">
-          <span>{error}</span>
-        </div>
+        <Notification
+          message={error}
+          type="error"
+          persistent={true}
+          onClose={() => setError(null)}
+        />
       )}
       {transactionStatus && (
-        <div className="flex items-center text-sm text-green-600 bg-green-100 p-3 rounded-lg shadow">
-          <span>Transacción realizada con éxito.</span>
-        </div>
+        <Notification
+          message={`Transacción realizada con éxito. ${transactionStatus}`}
+          type="success"
+        />
       )}
       {transactionStatus && (
         <TransferResultModal
