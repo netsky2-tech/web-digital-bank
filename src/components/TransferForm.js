@@ -2,6 +2,7 @@
 import { useState } from "react";
 
 import SelectAccount from "./SelectAccount";
+import TransactionDetails from "./TransactionDetails";
 
 import { useAccounts } from "@/contexts/AccountsContext";
 import { transactionRequest } from "@/services/transactionRequestService";
@@ -40,7 +41,7 @@ const TransferForm = () => {
         amount: formData.amount,
         debitDescription: formData.debitDescription,
         creditDescription: formData.creditDescription,
-        beneficiaryName: formData.beneficiaryName,
+        emailConfirmation: formData.emailConfirmation,
       };
 
       const result = await transactionRequest(transactionData);
@@ -55,7 +56,7 @@ const TransferForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white shadow rounded-lg p-6 space-y-6"
+      className=" bg-white shadow rounded-lg p-6 space-y-6"
     >
       {/** Titulo */}
       <h1 className="text-xl font-bold text-gray-700">Transferir</h1>
@@ -80,76 +81,11 @@ const TransferForm = () => {
         />
       </div>
 
-      {/**Monto a transferir */}
-      <div>
-        <h2 className="font-bold text-gray-700">3. Monto a transferir</h2>
-        <div className="flex items-center space-x-4">
-          <select className="w-1/2 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
-            <option value="NIO">C$</option>
-            <option value="USD">$</option>
-          </select>
-          <input
-            type="number"
-            min={0}
-            placeholder="1,000.00"
-            className="w-1/2 p-2 border rounded-md text-right focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          ></input>
-        </div>
-      </div>
-
       {/**Detalles */}
-      <div>
-        <h2 className="font-bold text-gray-700">4. Datos adicionales</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/**Concepto del débito */}
-          <div>
-            <label
-              htmlFor="concepto_debito"
-              className="block text-sm text-gray-600"
-            >
-              Concepto del débito
-            </label>
-            <input
-              id="concepto_debito"
-              type="text"
-              placeholder="Escriba el concepto del débito"
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            ></input>
-          </div>
-          {/**Concepto del crédito */}
-          <div>
-            <label
-              htmlFor="concepto_credito"
-              className="block text-sm text-gray-600"
-            >
-              Concepto del crédito
-            </label>
-            <input
-              id="concepto_credito"
-              type="text"
-              placeholder="Escriba el concepto del crédito"
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            ></input>
-          </div>
-        </div>
-        <div className="mt-4">
-          <label
-            htmlFor="email_confirmacion"
-            className="block text-sm text-gray-600"
-          >
-            Enviar confirmación a:
-          </label>
-          <input
-            id="email_confirmacion"
-            type="email"
-            placeholder="correo@example.com"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          ></input>
-        </div>
-      </div>
+      <TransactionDetails formData={formData} onChange={handleInputChange} />
 
       {/**Botones */}
-      <div className="flex justify-end space-x-4">
+      <div className="flex flex-wrap justify-end gap-4">
         <button
           type="reset"
           className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
