@@ -2,11 +2,11 @@
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 
-import TransactionHistory from "@/components/TransactionHistory";
+import TransactionHistory from "@/components/transactions/TransactionHistory";
 import Pagination from "@/components/UI/Pagination";
 import Spinner from "@/components/UI/Spinner";
 import { useAccounts } from "@/contexts/AccountsContext";
-import { getTransactionHistory } from "@/services/transactionsService";
+import { getTransactionHistory } from "@/services/transactions/transactionsService";
 
 const Transactions = () => {
   const {

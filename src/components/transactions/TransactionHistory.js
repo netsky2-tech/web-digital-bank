@@ -3,6 +3,13 @@ import PropTypes from "prop-types";
 import FilterDateForm from "./FilterDateForm";
 import TransactionTable from "./TransactionTable";
 
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat("es-NI", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
+};
+
 const TransactionHistory = ({
   transactions,
   dateFrom,
@@ -17,26 +24,21 @@ const TransactionHistory = ({
   setOrder,
 }) => {
   const handleOrderChange = (column) => {
-    if (orderBy === column) {
-      setOrder(order === "ASC" ? "DESC" : "ASC");
-    } else {
-      setOrderBy(column);
-      setOrder("ASC");
-    }
+    setOrderBy((prevOrderBy) => {
+      const isSameColumn = prevOrderBy === column;
+      setOrder(isSameColumn && order === "ASC" ? "DESC" : "ASC");
+      return column;
+    });
   };
 
-  const sortedTransactions = [...transactions].sort((a, b) => {
+  const sortedTransactions = transactions.sort((a, b) => {
     const dateA = new Date(a.transaction_date);
     const dateB = new Date(b.transaction_date);
-    return dateA.getTime() - dateB.getTime(); // Orden ascendente
+    return order === "ASC"
+      ? dateA.getTime() - dateB.getTime()
+      : dateB.getTime() - dateA.getTime();
   });
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("es-NI", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(amount);
-  };
   return (
     <>
       <FilterDateForm
@@ -49,7 +51,7 @@ const TransactionHistory = ({
       ></FilterDateForm>
 
       <TransactionTable
-        sortedTransactions={sortedTransactions}
+        transactions={sortedTransactions}
         handleOrderChange={handleOrderChange}
         orderBy={orderBy}
         order={order}

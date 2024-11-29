@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 
-import AccountCard from "@/components/AccountCard";
-import FilterProduct from "@/components/FilterProduct";
+import AccountCard from "@/components/account/AccountCard";
 import Spinner from "@/components/UI/Spinner";
+import FilterProduct from "@/components/utils/FilterProduct";
 import { useAccounts } from "@/contexts/AccountsContext";
 
 const Accounts = () => {

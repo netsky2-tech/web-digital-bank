@@ -2,9 +2,10 @@
 import { useState } from "react";
 
 import SelectAccount from "../account/SelectAccount";
-import TransactionDetails from "../transactions/TransactionDetails";
 import Notification from "../UI/Notification";
 import TransferResultModal from "../UI/TransferResultModal";
+
+import TransactionDetails from "./TransactionDetails";
 
 import { useAccounts } from "@/contexts/AccountsContext";
 import { transactionRequest } from "@/services/transactions/transactionRequestService";

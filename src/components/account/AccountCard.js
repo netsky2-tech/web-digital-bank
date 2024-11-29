@@ -13,6 +13,7 @@ const AccountCard = ({
     <Link
       href={`/transactions?accountNumber=${account_number}&bankId=${bankId}`}
       className="bg-white shadow-md rounded-lg p-4 flex justify-between items-center mb-4 hover:shadow-lg transition-shadow duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      aria-label={`Ver transacciones para la cuenta ${account_number}`}
     >
       {/** Informacion de la cuenta */}
       <div className="flex items-center space-x-4">
@@ -23,7 +24,7 @@ const AccountCard = ({
             width={24}
             height={24}
             className="h-6 w-6"
-            alt="icono cuenta"
+            alt={`Ícono de la cuenta bancaria ${label}`}
           ></Image>
         </div>
         {/**Detalles */}

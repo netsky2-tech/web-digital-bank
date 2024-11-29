@@ -1,8 +1,8 @@
 "use client";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-import { getAccountWithBalances } from "@/services/accountsService";
-import { getTransactionHistory } from "@/services/transactionsService";
+import { getAccountWithBalances } from "@/services/account/accountsService";
+import { getTransactionHistory } from "@/services/transactions/transactionsService";
 
 const AccountsContexts = createContext();
 
