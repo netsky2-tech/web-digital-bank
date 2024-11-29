@@ -21,7 +21,7 @@ cd web-digital-bank
 ### 3. Configura tu variable de entorno
 NEXT_PUBLIC_API_KEY=tu_api_key
 ### 4. ejecuta el proyecto
-npm run dev
+npm install & npm run dev
 ### 5. Accede a la aplicacion
 La aplicación estará disponible en http://localhost:3000.
 
