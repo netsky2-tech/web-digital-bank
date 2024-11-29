@@ -7,14 +7,9 @@
     "plugin:import/recommended",
     "plugin:prettier/recommended"
   ],
-  "plugins": [
-    "react",
-    "jsx-a11y",
-    "import",
-    "prettier"
-  ],
+  "plugins": ["react", "jsx-a11y", "import", "prettier"],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": ["error", { "endOfLine": "lf" }],
     "react/react-in-jsx-scope": "off",
     "import/order": [
       "error",
@@ -42,16 +37,8 @@
     },
     "import/resolver": {
       "alias": {
-        "map": [
-          "@",
-          "./src"
-        ],
-        "extensions": [
-          ".js",
-          ".jsx",
-          ".ts",
-          ".tsx"
-        ]
+        "map": ["@", "./src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     }
   }

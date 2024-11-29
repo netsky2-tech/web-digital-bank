@@ -1,10 +1,10 @@
-const TransactionTable = (
-{  sortedTransactions,
+const TransactionTable = ({
+  sortedTransactions,
   handleOrderChange,
   orderBy,
   order,
-  formatCurrency,}
-) => {
+  formatCurrency,
+}) => {
   return (
     <div className="overflow-x-auto shadow-lg rounded-lg">
       <table className="table-auto min-w-full border-collapse border border-gray-200">
