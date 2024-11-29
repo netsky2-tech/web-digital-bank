@@ -33,6 +33,24 @@ const TransferForm = () => {
     setError(null);
     setTransactionStatus(null);
 
+    if (
+      !formData.originAccount ||
+      !formData.destinationAccount ||
+      !formData.amount
+    ) {
+      setError("Por favor, complete los campos requeridos.");
+      setLoading(false);
+      return;
+    }
+
+    if (formData.originAccount === formData.destinationAccount) {
+      setError(
+        "La cuenta de origen y la cuenta de destino deben ser diferentes.",
+      );
+      setLoading(false);
+      return;
+    }
+
     try {
       // Encuentra las cuentas seleccionadas
       const originAccount = accounts.find(
@@ -45,6 +63,13 @@ const TransferForm = () => {
       if (!originAccount || !destinationAccount) {
         throw new Error("Por favor selecciona cuentas válidas.");
       }
+
+      if (parseFloat(formData.amount) > originAccount.balance) {
+        setError("Saldo insuficiente en la cuenta de origen.");
+        setLoading(false);
+        return;
+      }
+
       const transactionBody = {
         transfer_type: "OwnAccounts",
         debit_description: formData.debitDescription,
@@ -89,6 +114,10 @@ const TransferForm = () => {
       beneficiaryName: "",
     });
   };
+
+  const availableDestinationAccounts = accounts.filter(
+    (acc) => acc.account_number !== Number(formData.originAccount),
+  );
   return (
     <form
       onSubmit={handleSubmit}
@@ -111,7 +140,7 @@ const TransferForm = () => {
         {/**Cuenta Destino  */}
         <SelectAccount
           title="2. Cuenta origen"
-          accounts={accounts}
+          accounts={availableDestinationAccounts}
           selected={formData.destinationAccount}
           onChange={(value) => handleInputChange("destinationAccount", value)}
         />
@@ -142,9 +171,15 @@ const TransferForm = () => {
           {loading ? "Procesando..." : "Continuar"}
         </button>
       </div>
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && (
+        <div className="flex items-center text-sm text-red-600 bg-red-100 p-3 rounded-lg shadow">
+          <span>{error}</span>
+        </div>
+      )}
       {transactionStatus && (
-        <p className="text-green-500 text-sm">Transacción exitosa</p>
+        <div className="flex items-center text-sm text-green-600 bg-green-100 p-3 rounded-lg shadow">
+          <span>Transacción realizada con éxito.</span>
+        </div>
       )}
       {transactionStatus && (
         <TransferResultModal
