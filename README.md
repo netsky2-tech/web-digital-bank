@@ -9,7 +9,7 @@ Antes de ejecutar el proyecto, asegúrate de tener instalados los siguientes pro
 - **npm**: Se instala automáticamente con Node.js.
 - **Git**: [Descargar e instalar Git](https://git-scm.com/).
 1. Crea un archivo `.env` en la raíz del proyecto.
-2. Copia el contenido del archivo `.env.example` al archivo `.env`:
+2. Copia el contenido del archivo `.env.example` al archivo `.env.local` que debes de crear:
 3. Sustituye `your-api-key-here` por tu X-API_KEY
 
 ## Pasos para ejecutar la aplicación
