@@ -33,6 +33,8 @@ export const AccountsProvider = ({ children }) => {
   const [orderBy, setOrderBy] = useState("transaction_date");
   const [order, setOrder] = useState("ASC");
   const [transactionType, setTransactionType] = useState("ALL");
+  const [bankId, setBankId] = useState("BLNI");
+  const [customerId, setCustomerId] = useState("100200");
 
   // Totales de paginación
   const [totalPages, setTotalPages] = useState(1);
@@ -43,8 +45,8 @@ export const AccountsProvider = ({ children }) => {
       setError(null);
       try {
         const data = await getAccountWithBalances({
-          bankId: "BLNI",
-          customerId: "100200",
+          bankId: bankId,
+          customerId: customerId,
           accountType: "S001",
         });
         setAccounts(data);
@@ -55,7 +57,7 @@ export const AccountsProvider = ({ children }) => {
       }
     };
     loadAccounts();
-  }, []);
+  }, [bankId, customerId]);
 
   useEffect(() => {
     if (selectedAccount) {
@@ -142,6 +144,10 @@ export const AccountsProvider = ({ children }) => {
       setError,
       setTotalPages,
       setCurrentPage,
+      bankId,
+      setBankId,
+      customerId,
+      setCustomerId,
     }),
     [
       accounts,
@@ -160,6 +166,10 @@ export const AccountsProvider = ({ children }) => {
       order,
       transactionType,
       totalPages,
+      bankId,
+      setBankId,
+      customerId,
+      setCustomerId,
     ],
   );
 

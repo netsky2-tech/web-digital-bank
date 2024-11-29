@@ -1,7 +1,11 @@
 let accessToken = null;
 let tokenExpiration = null;
+let cachedToken = null;
 
 export const fetchAuthToken = async () => {
+  if (cachedToken) {
+    return cachedToken;
+  }
   const tokenUrl = "http://localhost:3000/api/oauth2/token";
 
   try {
@@ -30,8 +34,9 @@ export const fetchAuthToken = async () => {
     // Guardamos el token y su expiración
     accessToken = data.access_token;
     tokenExpiration = Date.now() + data.expires_in * 1000;
+    cachedToken = accessToken;
 
-    return accessToken;
+    return cachedToken;
   } catch (error) {
     console.error("Error al obtener el token:", error);
     throw error;

@@ -22,14 +22,14 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <div className="min-h-screen flex flex-col">
-          <Navbar />
-          <div className="flex-1 p-6 bg-gray-50">
-            <LoadingProvider>
-              <AccountsProvider>
+          <LoadingProvider>
+            <AccountsProvider>
+              <Navbar />
+              <div className="flex-1 p-6 bg-gray-50">
                 <main className="flex-1 p-6">{children}</main>
-              </AccountsProvider>
-            </LoadingProvider>
-          </div>
+              </div>
+            </AccountsProvider>
+          </LoadingProvider>
           <Footer />
         </div>
         {loading && <Spinner />}

@@ -2,10 +2,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+
+import ChangeCustomer from "./changeCustomer";
+
+import { useAccounts } from "@/contexts/AccountsContext";
+
 const Navbar = () => {
   const pathname = usePathname();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { bankId, setBankId, customerId, setCustomerId } = useAccounts();
 
   const navItems = [
     { label: "Inicio", href: "/" },
@@ -14,6 +20,19 @@ const Navbar = () => {
     { label: "Historial de movimientos", href: "/transactions" },
     { label: "Tasas", href: "/exchange-rates" },
   ];
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const handleSave = (data) => {
+    setBankId(data.bankId);
+    setCustomerId(data.customerId);
+  };
   return (
     <>
       <header className="bg-green-700 text-white p-4 flex justify-between items-center">
@@ -34,8 +53,22 @@ const Navbar = () => {
           ))}
         </nav>
         <div className="hidden md:flex items-center space-x-4">
-          <span>Octavio Morales Ruiz</span>
-          <span className="hover:underline text-xs">Salir</span>
+          <span>
+            Cargando datos de : {bankId} {customerId}
+          </span>
+          <span className="hover:underline text-xs">
+            <button
+              onClick={openModal}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md"
+            >
+              Cambiar
+            </button>
+          </span>
+          <ChangeCustomer
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            onSave={handleSave}
+          />
         </div>
 
         {/* Icono hamburguesa */}
