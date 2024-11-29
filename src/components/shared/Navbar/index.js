@@ -12,7 +12,7 @@ const Navbar = () => {
     { label: "Mis Productos", href: "/accounts" },
     { label: "Transferencias", href: "/transfer" },
     { label: "Historial de movimientos", href: "/transactions" },
-    { label: "Tasas", href: "/tasas" },
+    { label: "Tasas", href: "/exchange-rates" },
   ];
   return (
     <>

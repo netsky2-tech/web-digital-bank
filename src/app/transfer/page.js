@@ -1,4 +1,4 @@
-import TransferForm from "@/components/TransferForm";
+import TransferForm from "@/components/transfer/TransferForm";
 
 const Transfer = () => {
   return (

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import AccountCard from "@/components/AccountCard";
 import FilterProduct from "@/components/FilterProduct";
-import Spinner from "@/components/Spinner";
+import Spinner from "@/components/UI/Spinner";
 import { useAccounts } from "@/contexts/AccountsContext";
 
 const Accounts = () => {

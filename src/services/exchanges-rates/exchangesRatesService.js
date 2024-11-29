@@ -1,4 +1,4 @@
-import { fetchAuthToken } from "./authService";
+import { fetchAuthToken } from "../auth/authService";
 
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 if (!API_KEY) {

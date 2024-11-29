@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 
-import Notification from "@/components/Notification";
-import Spinner from "@/components/Spinner";
-import { fetchExchangesRates } from "@/services/exchangesRatesService";
+import Notification from "@/components/UI/Notification";
+import Spinner from "@/components/UI/Spinner";
+import { fetchExchangesRates } from "@/services/exchanges-rates/exchangesRatesService";
 const ExchangesRates = () => {
   const [exchangesRates, setExchangesRates] = useState("");
   const [error, setError] = useState("");

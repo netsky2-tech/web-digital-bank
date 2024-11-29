@@ -2,9 +2,9 @@
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 
-import Pagination from "@/components/Pagination";
-import Spinner from "@/components/Spinner";
 import TransactionHistory from "@/components/TransactionHistory";
+import Pagination from "@/components/UI/Pagination";
+import Spinner from "@/components/UI/Spinner";
 import { useAccounts } from "@/contexts/AccountsContext";
 import { getTransactionHistory } from "@/services/transactionsService";
 
@@ -113,7 +113,6 @@ const Transactions = () => {
     const account = accounts.find(
       (acc) => acc.account_number === Number(accountId),
     );
-    console.log(account);
     changeSelectedAccount(account);
   };
 

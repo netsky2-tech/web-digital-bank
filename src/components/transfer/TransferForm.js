@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 
-import Notification from "./Notification";
-import SelectAccount from "./SelectAccount";
-import TransactionDetails from "./TransactionDetails";
-import TransferResultModal from "./TransferResultModal";
+import SelectAccount from "../account/SelectAccount";
+import TransactionDetails from "../transactions/TransactionDetails";
+import Notification from "../UI/Notification";
+import TransferResultModal from "../UI/TransferResultModal";
 
 import { useAccounts } from "@/contexts/AccountsContext";
-import { transactionRequest } from "@/services/transactionRequestService";
+import { transactionRequest } from "@/services/transactions/transactionRequestService";
 
 const TransferForm = () => {
   const { accounts } = useAccounts();

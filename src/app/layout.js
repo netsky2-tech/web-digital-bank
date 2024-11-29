@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
-import Spinner from "@/components/Spinner";
+import Spinner from "@/components/UI/Spinner";
 import { AccountsProvider } from "@/contexts/AccountsContext";
 import "./globals.css";
 import { LoadingProvider, useLoading } from "@/contexts/LoadingContext";

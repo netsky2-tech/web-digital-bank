@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Shortcuts from "@/components/home/ShortcutsCard";
 
 export default function Home() {
   return (
@@ -14,35 +14,7 @@ export default function Home() {
         </section>
 
         {/* Accesos directos*/}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow-lg flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-800">
-                Mis Productos
-              </h2>
-              <p className="text-gray-600">Consulta tus cuentas y productos.</p>
-            </div>
-            <Link href="/accounts">Ver más</Link>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-lg flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-800">
-                Transferencias
-              </h2>
-              <p className="text-gray-600">Envía dinero rápidamente.</p>
-            </div>
-            <Link href="/transfer">Ver más</Link>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-lg flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-800">
-                Historial de Movimientos
-              </h2>
-              <p className="text-gray-600">Revisa tus últimas transacciones.</p>
-            </div>
-            <Link href="/transactions">Ver más</Link>
-          </div>
-        </section>
+        <Shortcuts></Shortcuts>
 
         {/* Transacciones */}
         <section className="mb-8">
