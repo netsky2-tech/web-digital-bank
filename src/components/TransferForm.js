@@ -1,38 +1,48 @@
 "use client";
 import { useState } from "react";
 
+import SelectAccount from "./SelectAccount";
+
 import { useAccounts } from "@/contexts/AccountsContext";
 import { transactionRequest } from "@/services/transactionRequestService";
 
 const TransferForm = () => {
   const { accounts } = useAccounts();
-  const [amount, setAmount] = useState(0);
+  const [formData, setFormData] = useState({
+    originAccount: "",
+    destinationAccount: "",
+    amount: "",
+    currency: "USD",
+    debitDescription: "",
+    creditDescription: "",
+    beneficiaryName: "",
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [transactionStatus, setTransactionStatus] = useState(null);
 
+  const handleInputChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const transactionData = {
-      bankId: "BLNI",
-      accountNumber: "100200",
-      viewId: "view123",
-      transferType: "OwnAccounts",
-      debitDescription: "Debit description",
-      creditDescription: "Credit description",
-      beneficiaryName,
-      bankCode: "BLNI",
-      accountNumberTo: "100200300",
-      currency: "USD",
-      amount,
-    };
-
     setLoading(true);
     setError(null);
     setTransactionStatus(null);
 
     try {
+      const transactionData = {
+        bankId: "BLNI",
+        accountNumber: formData.originAccount,
+        accountNumberTo: formData.destinationAccount,
+        currency: formData.currency,
+        amount: formData.amount,
+        debitDescription: formData.debitDescription,
+        creditDescription: formData.creditDescription,
+        beneficiaryName: formData.beneficiaryName,
+      };
+
       const result = await transactionRequest(transactionData);
       setTransactionStatus(result);
     } catch (err) {
@@ -55,48 +65,26 @@ const TransferForm = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/**Cuenta Origen  */}
-        <div>
-          <h2 className="font-bold text-gray-700">1. Cuenta origen</h2>
-          <select value={""} className="w-full p-2 border rounded-md">
-            <option value="" disabled>
-              Selecciona una cuenta
-            </option>
-            {accounts.map((account) => (
-              <option
-                key={account.account_number}
-                value={account.account_number}
-              >
-                {account.bankId} {account.account_number} - {account.currency}{" "}
-                {account.balance}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <h2 className="font-bold text-gray-700">2. Cuenta destino</h2>
-          <select value={""} className="w-full p-2 border rounded-md">
-            <option value="" disabled>
-              Selecciona una cuenta
-            </option>
-            {accounts.map((account) => (
-              <option
-                key={account.account_number}
-                value={account.account_number}
-              >
-                {account.bankId} {account.account_number} - {account.currency}{" "}
-                {account.balance}
-              </option>
-            ))}
-          </select>
-        </div>
+        <SelectAccount
+          title="1. Cuenta origen"
+          accounts={accounts}
+          selected={formData.originAccount}
+          onChange={(value) => handleInputChange("originAccount", value)}
+        />
+        {/**Cuenta Destino  */}
+        <SelectAccount
+          title="2. Cuenta origen"
+          accounts={accounts}
+          selected={formData.destinationAccount}
+          onChange={(value) => handleInputChange("destinationAccount", value)}
+        />
       </div>
 
       {/**Monto a transferir */}
       <div>
         <h2 className="font-bold text-gray-700">3. Monto a transferir</h2>
         <div className="flex items-center space-x-4">
-          <select className="w-1/2 p-2 border rounded-md">
+          <select className="w-1/2 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
             <option value="NIO">C$</option>
             <option value="USD">$</option>
           </select>
@@ -104,7 +92,7 @@ const TransferForm = () => {
             type="number"
             min={0}
             placeholder="1,000.00"
-            className="w-1/2 p-2 border rounded-md text-right"
+            className="w-1/2 p-2 border rounded-md text-right focus:ring-2 focus:ring-blue-500 focus:outline-none"
           ></input>
         </div>
       </div>
@@ -125,7 +113,7 @@ const TransferForm = () => {
               id="concepto_debito"
               type="text"
               placeholder="Escriba el concepto del débito"
-              className="w-full p-2 border rounded-md"
+              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
             ></input>
           </div>
           {/**Concepto del crédito */}
@@ -140,7 +128,7 @@ const TransferForm = () => {
               id="concepto_credito"
               type="text"
               placeholder="Escriba el concepto del crédito"
-              className="w-full p-2 border rounded-md"
+              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
             ></input>
           </div>
         </div>
@@ -155,7 +143,7 @@ const TransferForm = () => {
             id="email_confirmacion"
             type="email"
             placeholder="correo@example.com"
-            className="w-full p-2 border rounded-md"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
           ></input>
         </div>
       </div>
