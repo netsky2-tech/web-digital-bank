@@ -1,26 +1,45 @@
 "use client";
 import { useState } from "react";
 
+import { useAccounts } from "@/contexts/AccountsContext";
+import { transactionRequest } from "@/services/transactionRequestService";
+
 const TransferForm = () => {
+  const { accounts } = useAccounts();
   const [amount, setAmount] = useState(0);
-  const [scheduleTransfer, setScheduleTransfer] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [transactionStatus, setTransactionStatus] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    if (!originAccount || !destinationAccount || !amount) {
-      alert("Por favor, completa todos los campos obligatorios.");
-      return;
-    }
-
-    // Simulación de envío de datos
-    console.log({
-      originAccount,
-      destinationAccount,
+    const transactionData = {
+      bankId: "BLNI",
+      accountNumber: "100200",
+      viewId: "view123",
+      transferType: "OwnAccounts",
+      debitDescription: "Debit description",
+      creditDescription: "Credit description",
+      beneficiaryName,
+      bankCode: "BLNI",
+      accountNumberTo: "100200300",
+      currency: "USD",
       amount,
-    });
+    };
 
-    alert("¡Transferencia realizada con éxito!");
+    setLoading(true);
+    setError(null);
+    setTransactionStatus(null);
+
+    try {
+      const result = await transactionRequest(transactionData);
+      setTransactionStatus(result);
+    } catch (err) {
+      setError(err.message || "Error al realizar la solicitud de transacción.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -42,6 +61,15 @@ const TransferForm = () => {
             <option value="" disabled>
               Selecciona una cuenta
             </option>
+            {accounts.map((account) => (
+              <option
+                key={account.account_number}
+                value={account.account_number}
+              >
+                {account.bankId} {account.account_number} - {account.currency}{" "}
+                {account.balance}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -51,6 +79,15 @@ const TransferForm = () => {
             <option value="" disabled>
               Selecciona una cuenta
             </option>
+            {accounts.map((account) => (
+              <option
+                key={account.account_number}
+                value={account.account_number}
+              >
+                {account.bankId} {account.account_number} - {account.currency}{" "}
+                {account.balance}
+              </option>
+            ))}
           </select>
         </div>
       </div>

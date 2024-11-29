@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 const TransactionTable = ({
   sortedTransactions,
   handleOrderChange,
@@ -88,5 +89,11 @@ const TransactionTable = ({
     </div>
   );
 };
-
+TransactionTable.propTypes = {
+  sortedTransactions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  handleOrderChange: PropTypes.func.isRequired,
+  orderBy: PropTypes.string.isRequired,
+  order: PropTypes.oneOf(["ASC", "DESC"]).isRequired,
+  formatCurrency: PropTypes.func.isRequired,
+};
 export default TransactionTable;
